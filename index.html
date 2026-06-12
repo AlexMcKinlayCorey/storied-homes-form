@@ -20,7 +20,6 @@
       --parchment: #E8E0D0;
       --parchment-dim: #B8AFA0;
       --brass: #B8975A;
-      --brass-light: #CCA96A;
       --rule: rgba(184, 151, 90, 0.35);
       --mid-grey: #4A4A46;
       --error: #C9735A;
@@ -42,7 +41,6 @@
       padding: 60px 24px 80px;
     }
 
-    /* ── Header ornament ── */
     .eyebrow {
       font-family: 'Inter', sans-serif;
       font-size: 10px;
@@ -89,7 +87,6 @@
       margin: 32px auto;
     }
 
-    /* ── Intro text ── */
     .intro {
       max-width: 540px;
       font-family: 'Cormorant Garamond', serif;
@@ -101,7 +98,6 @@
       margin: 0 auto 48px;
     }
 
-    /* ── Form card ── */
     .form-card {
       width: 100%;
       max-width: 540px;
@@ -165,7 +161,6 @@
       display: block;
     }
 
-    /* Two-col row for phone/address */
     .field-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -179,7 +174,6 @@
       }
     }
 
-    /* ── Submit button ── */
     .submit-wrap {
       margin-top: 48px;
       text-align: center;
@@ -242,7 +236,6 @@
       to { transform: translate(-50%, -50%) rotate(360deg); }
     }
 
-    /* ── Success state ── */
     .success-panel {
       display: none;
       text-align: center;
@@ -285,7 +278,6 @@
       margin: 0 auto;
     }
 
-    /* ── Form-level error ── */
     .form-error {
       background: rgba(201, 115, 90, 0.1);
       border: 1px solid rgba(201, 115, 90, 0.4);
@@ -301,7 +293,6 @@
       display: block;
     }
 
-    /* ── Footer ── */
     .footer {
       margin-top: 72px;
       text-align: center;
@@ -330,7 +321,6 @@
       color: var(--parchment);
     }
 
-    /* ── Consent note ── */
     .consent-note {
       margin-top: 24px;
       font-size: 11px;
@@ -354,7 +344,6 @@
     Register to be notified of upcoming tours and to receive my monthly newsletter with updates on Toronto's real estate market, a featured storied home and upcoming events.
   </p>
 
-  <!-- ── SUCCESS PANEL ── -->
   <div class="success-panel" id="successPanel">
     <div class="success-mark">✦</div>
     <h2 class="success-heading">You are on the list.</h2>
@@ -363,7 +352,6 @@
     </p>
   </div>
 
-  <!-- ── FORM ── -->
   <div class="form-card" id="formCard">
 
     <div class="form-error" id="formError">
@@ -423,16 +411,6 @@
   </div>
 
   <script>
-    // ── Configuration ──────────────────────────────────────────────────────────
-    // NOTE: In production, the API call should be routed through a
-    // serverless function so the key is never exposed in client-side code.
-    // For Netlify deployment, replace this with a call to /.netlify/functions/submit
-    // and move the key into Netlify environment variables.
-
-    const FUB_API_KEY = 'fka_0qePhuQ3g2gr74U3uCNtRYfyj38HWhuBEy';
-    const FUB_EVENTS_URL = 'https://api.followupboss.com/v1/events';
-
-    // ── Validation ─────────────────────────────────────────────────────────────
     function validateEmail(v) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     }
@@ -467,7 +445,6 @@
       return !(e1 || e2 || e3 || e4 || e5);
     }
 
-    // ── Submit ─────────────────────────────────────────────────────────────────
     async function handleSubmit() {
       document.getElementById('formError').classList.remove('visible');
 
@@ -483,39 +460,17 @@
       btn.classList.add('loading');
       btn.disabled = true;
 
-      const payload = {
-        source: 'Storied Homes Walking Tour Sign-Up',
-        type:   'Registration',
-        person: {
-          firstName:  firstName,
-          lastName:   lastName,
-          emails:  [{ value: email, type: 'home' }],
-          phones:  [{ value: phone, type: 'mobile' }],
-          addresses: [{ street: address, type: 'home' }],
-          tags: ['Walking Tour', 'Newsletter', 'Storied Homes']
-        }
-      };
-
       try {
-        const credentials = btoa(FUB_API_KEY + ':');
-        const response = await fetch(FUB_EVENTS_URL, {
+        const response = await fetch('/.netlify/functions/submit', {
           method: 'POST',
-          headers: {
-            'Content-Type':  'application/json',
-            'Authorization': 'Basic ' + credentials,
-            'X-System':      'Storied Homes Walking Tour Form',
-            'X-System-Key':  'storied-homes-walking-tour-2025'
-          },
-          body: JSON.stringify(payload)
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName, lastName, email, phone, address })
         });
 
         if (response.ok || response.status === 200 || response.status === 201) {
-          // Success
           document.getElementById('formCard').style.display = 'none';
           document.getElementById('successPanel').classList.add('visible');
         } else {
-          const errBody = await response.text();
-          console.error('FUB API error:', response.status, errBody);
           throw new Error('API returned ' + response.status);
         }
       } catch (err) {
@@ -526,7 +481,6 @@
       }
     }
 
-    // ── Clear errors on input ──────────────────────────────────────────────────
     ['firstName','lastName','email','phone','address'].forEach(id => {
       document.getElementById(id).addEventListener('input', function() {
         this.classList.remove('error');
@@ -535,7 +489,6 @@
       });
     });
 
-    // ── Allow Enter key to submit ──────────────────────────────────────────────
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Enter') handleSubmit();
     });
