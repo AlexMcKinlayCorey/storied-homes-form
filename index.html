@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Storied Homes Walking Tours — Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --charcoal: #1C1C1A;
+      --charcoal-mid: #282826;
+      --parchment: #E8E0D0;
+      --parchment-dim: #B8AFA0;
+      --brass: #B8975A;
+      --brass-light: #CCA96A;
+      --rule: rgba(184, 151, 90, 0.35);
+      --mid-grey: #4A4A46;
+      --error: #C9735A;
+    }
+
+    html, body {
+      min-height: 100%;
+      background-color: var(--charcoal);
+      color: var(--parchment);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 60px 24px 80px;
+    }
+
+    /* ── Header ornament ── */
+    .eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--parchment-dim);
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 8vw, 72px);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--parchment);
+      text-align: center;
+      line-height: 1;
+    }
+
+    .wordmark em {
+      font-style: italic;
+      color: var(--parchment);
+      font-weight: 300;
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--parchment-dim);
+      text-align: center;
+      margin-top: 14px;
+      letter-spacing: 0.04em;
+    }
+
+    .rule {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--brass), transparent);
+      margin: 32px auto;
+    }
+
+    /* ── Intro text ── */
+    .intro {
+      max-width: 540px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(16px, 2.2vw, 18px);
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--parchment-dim);
+      text-align: center;
+      margin: 0 auto 48px;
+    }
+
+    /* ── Form card ── */
+    .form-card {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .field-group {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--parchment-dim);
+      margin-bottom: 10px;
+    }
+
+    .field-input {
+      display: block;
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--rule);
+      padding: 8px 0 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(18px, 3vw, 22px);
+      font-weight: 300;
+      color: var(--parchment);
+      outline: none;
+      transition: border-color 0.3s ease;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+
+    .field-input::placeholder {
+      color: var(--mid-grey);
+      font-style: italic;
+    }
+
+    .field-input:focus {
+      border-bottom-color: var(--parchment-dim);
+    }
+
+    .field-input.error {
+      border-bottom-color: var(--error);
+    }
+
+    .field-error {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--error);
+      margin-top: 8px;
+      display: none;
+    }
+
+    .field-error.visible {
+      display: block;
+    }
+
+    /* Two-col row for phone/address */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 500px) {
+      .field-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+
+    /* ── Submit button ── */
+    .submit-wrap {
+      margin-top: 48px;
+      text-align: center;
+    }
+
+    .submit-btn {
+      display: inline-block;
+      padding: 16px 52px;
+      background: transparent;
+      border: 1px solid var(--parchment-dim);
+      color: var(--parchment-dim);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: var(--parchment-dim);
+      color: var(--charcoal);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .submit-btn .btn-text {
+      transition: opacity 0.2s;
+    }
+
+    .submit-btn.loading .btn-text {
+      opacity: 0;
+    }
+
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--parchment-dim);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    .submit-btn.loading .spinner {
+      display: block;
+    }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* ── Success state ── */
+    .success-panel {
+      display: none;
+      text-align: center;
+      padding: 0 24px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .success-panel.visible {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-mark {
+      font-size: 32px;
+      color: var(--parchment-dim);
+      margin-bottom: 24px;
+    }
+
+    .success-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 300;
+      color: var(--parchment);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    .success-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--parchment-dim);
+      line-height: 1.75;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    /* ── Form-level error ── */
+    .form-error {
+      background: rgba(201, 115, 90, 0.1);
+      border: 1px solid rgba(201, 115, 90, 0.4);
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      color: var(--error);
+      letter-spacing: 0.05em;
+      display: none;
+    }
+
+    .form-error.visible {
+      display: block;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 72px;
+      text-align: center;
+    }
+
+    .footer-rule {
+      width: 60px;
+      height: 1px;
+      background: var(--rule);
+      margin: 0 auto 24px;
+    }
+
+    .footer-text {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--mid-grey);
+      text-transform: uppercase;
+    }
+
+    .footer-text a {
+      color: var(--parchment-dim);
+      text-decoration: none;
+    }
+
+    .footer-text a:hover {
+      color: var(--parchment);
+    }
+
+    /* ── Consent note ── */
+    .consent-note {
+      margin-top: 24px;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--mid-grey);
+      text-align: center;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+  <p class="eyebrow">Heaps Estrin &nbsp;/&nbsp; Alex McKinlay Corey</p>
+
+  <h1 class="wordmark">Storied <em>Homes</em></h1>
+  <p class="subtitle">Walking Tours of Toronto's Architectural Heritage</p>
+
+  <div class="rule"></div>
+
+  <p class="intro">
+    Register to be notified of upcoming tours and to receive my monthly newsletter with updates on Toronto's real estate market, a featured storied home and upcoming events.
+  </p>
+
+  <!-- ── SUCCESS PANEL ── -->
+  <div class="success-panel" id="successPanel">
+    <div class="success-mark">✦</div>
+    <h2 class="success-heading">You are on the list.</h2>
+    <p class="success-body">
+      Thank you for your interest in the Storied Homes Walking Tours. You will be among the first to hear of new dates, neighbourhoods, and events.
+    </p>
+  </div>
+
+  <!-- ── FORM ── -->
+  <div class="form-card" id="formCard">
+
+    <div class="form-error" id="formError">
+      Something went wrong. Please try again or contact alex@heapsestrin.com.
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="firstName">First name</label>
+        <input class="field-input" id="firstName" type="text" placeholder="Jane" autocomplete="given-name" />
+        <p class="field-error" id="firstNameError">Required</p>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="lastName">Last name</label>
+        <input class="field-input" id="lastName" type="text" placeholder="Doe" autocomplete="family-name" />
+        <p class="field-error" id="lastNameError">Required</p>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="email">Email address</label>
+      <input class="field-input" id="email" type="email" placeholder="jane@example.com" autocomplete="email" />
+      <p class="field-error" id="emailError">A valid email address is required</p>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="phone">Phone number</label>
+      <input class="field-input" id="phone" type="tel" placeholder="416 000 0000" autocomplete="tel" />
+      <p class="field-error" id="phoneError">Required</p>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="address">Mailing address</label>
+      <input class="field-input" id="address" type="text" placeholder="123 Spruce St, Toronto, ON" autocomplete="street-address" />
+      <p class="field-error" id="addressError">Required</p>
+    </div>
+
+    <div class="submit-wrap">
+      <button class="submit-btn" id="submitBtn" type="button" onclick="handleSubmit()">
+        <span class="btn-text">Register</span>
+        <span class="spinner"></span>
+      </button>
+    </div>
+
+    <p class="consent-note">
+      Your information is held privately and used only to notify you of<br>
+      Storied Homes events and heritage news. You may unsubscribe at any time.
+    </p>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-rule"></div>
+    <p class="footer-text">
+      <a href="https://www.heapsestrin.com/storied-homes/" target="_blank">heapsestrin.com/storied-homes</a>
+    </p>
+  </div>
+
+  <script>
+    // ── Configuration ──────────────────────────────────────────────────────────
+    // NOTE: In production, the API call should be routed through a
+    // serverless function so the key is never exposed in client-side code.
+    // For Netlify deployment, replace this with a call to /.netlify/functions/submit
+    // and move the key into Netlify environment variables.
+
+    const FUB_API_KEY = 'fka_0qePhuQ3g2gr74U3uCNtRYfyj38HWhuBEy';
+    const FUB_EVENTS_URL = 'https://api.followupboss.com/v1/events';
+
+    // ── Validation ─────────────────────────────────────────────────────────────
+    function validateEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+    }
+
+    function setError(fieldId, errorId, condition) {
+      const field = document.getElementById(fieldId);
+      const err   = document.getElementById(errorId);
+      if (condition) {
+        field.classList.add('error');
+        err.classList.add('visible');
+        return true;
+      } else {
+        field.classList.remove('error');
+        err.classList.remove('visible');
+        return false;
+      }
+    }
+
+    function validate() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = document.getElementById('lastName').value.trim();
+      const email     = document.getElementById('email').value.trim();
+      const phone     = document.getElementById('phone').value.trim();
+      const address   = document.getElementById('address').value.trim();
+
+      const e1 = setError('firstName', 'firstNameError', !firstName);
+      const e2 = setError('lastName',  'lastNameError',  !lastName);
+      const e3 = setError('email',     'emailError',     !validateEmail(email));
+      const e4 = setError('phone',     'phoneError',     !phone);
+      const e5 = setError('address',   'addressError',   !address);
+
+      return !(e1 || e2 || e3 || e4 || e5);
+    }
+
+    // ── Submit ─────────────────────────────────────────────────────────────────
+    async function handleSubmit() {
+      document.getElementById('formError').classList.remove('visible');
+
+      if (!validate()) return;
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = document.getElementById('lastName').value.trim();
+      const email     = document.getElementById('email').value.trim();
+      const phone     = document.getElementById('phone').value.trim();
+      const address   = document.getElementById('address').value.trim();
+
+      const btn = document.getElementById('submitBtn');
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      const payload = {
+        source: 'Storied Homes Walking Tour Sign-Up',
+        type:   'Registration',
+        person: {
+          firstName:  firstName,
+          lastName:   lastName,
+          emails:  [{ value: email, type: 'home' }],
+          phones:  [{ value: phone, type: 'mobile' }],
+          addresses: [{ street: address, type: 'home' }],
+          tags: ['Walking Tour', 'Newsletter', 'Storied Homes']
+        }
+      };
+
+      try {
+        const credentials = btoa(FUB_API_KEY + ':');
+        const response = await fetch(FUB_EVENTS_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type':  'application/json',
+            'Authorization': 'Basic ' + credentials,
+            'X-System':      'Storied Homes Walking Tour Form',
+            'X-System-Key':  'storied-homes-walking-tour-2025'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok || response.status === 200 || response.status === 201) {
+          // Success
+          document.getElementById('formCard').style.display = 'none';
+          document.getElementById('successPanel').classList.add('visible');
+        } else {
+          const errBody = await response.text();
+          console.error('FUB API error:', response.status, errBody);
+          throw new Error('API returned ' + response.status);
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        document.getElementById('formError').classList.add('visible');
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    }
+
+    // ── Clear errors on input ──────────────────────────────────────────────────
+    ['firstName','lastName','email','phone','address'].forEach(id => {
+      document.getElementById(id).addEventListener('input', function() {
+        this.classList.remove('error');
+        const errEl = document.getElementById(id + 'Error');
+        if (errEl) errEl.classList.remove('visible');
+      });
+    });
+
+    // ── Allow Enter key to submit ──────────────────────────────────────────────
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSubmit();
+    });
+  </script>
+</body>
+</html>
