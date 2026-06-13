@@ -385,8 +385,8 @@
 
     <div class="field-group">
       <label class="field-label" for="address">Mailing address</label>
-      <input class="field-input" id="address" type="text" placeholder="123 Spruce St, Toronto, ON" autocomplete="street-address" />
-      <p class="field-error" id="addressError">Required</p>
+      <input class="field-input" id="address" type="text" placeholder="123 Spruce St, Toronto, ON (optional)" autocomplete="street-address" />
+      <p class="field-error" id="addressError">Optional</p>
     </div>
 
     <div class="submit-wrap">
@@ -440,7 +440,7 @@
       const e2 = setError('lastName',  'lastNameError',  !lastName);
       const e3 = setError('email',     'emailError',     !validateEmail(email));
       const e4 = setError('phone',     'phoneError',     !phone);
-      const e5 = setError('address',   'addressError',   !address);
+      const e5 = false;
 
       return !(e1 || e2 || e3 || e4 || e5);
     }
